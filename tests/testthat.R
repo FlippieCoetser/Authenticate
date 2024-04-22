@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(R.Template)
+library(Authenticate)
 
-test_check("R.Template")
+test_check("Authenticate")
