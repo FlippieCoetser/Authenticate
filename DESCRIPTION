@@ -13,18 +13,18 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
-Imports:
-    shiny,
+Suggests: 
+    testthat (>= 3.0.0),
+    uuid,
     Validate,
     Environment,
     Query,
-    Storage,
+    Storage
 Remotes:
     FlippieCoetser/Validate,
     FlippieCoetser/Environment,
     FlippieCoetser/Query,
     FlippieCoetser/Storage
-Suggests: 
-    testthat (>= 3.0.0),
-    uuid
 Config/testthat/edition: 3
+Depends: 
+    R (>= 2.10)
