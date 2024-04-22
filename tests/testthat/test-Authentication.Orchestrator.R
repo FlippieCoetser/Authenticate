@@ -1,0 +1,142 @@
+describe('Authentication.Orchestrator',{
+  it('exist',{
+    Authentication.Orchestrator |> expect.exist()
+  })
+})
+
+describe("When orchestrations <- storage |> Authentication.Orchestrator()",{
+  it("then orchestrations is a list",{
+    # Given
+    storage <- get.storage()
+
+    # When
+    orchestrations <- storage |> Authentication.Orchestrator()
+
+    # Then
+    orchestrations |> expect.list()
+  })
+  it("then orchestrations contains 'Register' orchestration",{
+    # Given
+    storage <- get.storage()
+
+    # When
+    orchestrations <- storage |> Authentication.Orchestrator()
+
+    # Then
+    orchestrations[['Register']] |> expect.exist()
+  })
+  it("then orchestrations contains 'Matching.Username' orchestration",{
+    # Given
+    storage <- get.storage()
+
+    # When
+    orchestrations <- storage |> Authentication.Orchestrator()
+
+    # Then
+    orchestrations[['Match.Username']] |> expect.exist()
+  })
+  it("then orchestrations contains 'Authenticate' orchestration",{
+    # Given
+    storage <- get.storage()
+
+    # When
+    orchestrations <- storage |> Authentication.Orchestrator()
+
+    # Then
+    orchestrations[['Authenticate']] |> expect.exist()
+  })
+})
+
+describe("When user |> orchestrate[['Register']](password)",{
+  it("then user hash is set and added to storage",{
+    # Given
+    storage <- get.storage()
+
+    orchestrate <- storage |> Authentication.Orchestrator()
+
+    user     <- 'user.new@gmail.com' |> User()
+    password <- 'password'
+    id       <- user[['id']]
+
+    expected.user <- user
+    expected.user[['hash']] <- user[['salt']] |> 
+      paste(password) |> digest::digest(algo = 'sha512', serialize = FALSE)
+
+    # When
+    user |> orchestrate[['Register']](password)
+
+    # Then
+    actual.user <- id |> storage[['RetrieveWhereId']]('User')
+    actual.user |> expect.equal.data(expected.user)
+  })
+})
+
+describe("When user |> orchestrate[['Match.Username']]()",{
+  it("then returns TRUE if user with matching username found in storage",{
+    # Given
+    storage <- get.storage()
+
+    orchestrate <- storage |> Authentication.Orchestrator()
+
+    user <-  'User' |> storage[['Retrieve']]() |> tail(1)
+
+    # When
+    result <- user |> orchestrate[['Match.Username']]()
+
+    # Then
+    result |> expect.equal(TRUE)
+  })
+  it("then returns FALSE if no user with matching username found in storage",{
+    # Given
+    storage <- get.storage()
+
+    orchestrate <- storage |> Authentication.Orchestrator()
+
+    user <- 'not.existing.user' |> User()
+
+    # When
+    result <- user |> orchestrate[['Match.Username']]()
+
+    # Then
+    result |> expect.equal(FALSE)
+  })
+})
+
+describe("When user |> orchestrate[['Authenticate']](password)",{
+  it("then returns TRUE if user hash matches password",{
+    # Given
+    storage <- get.storage()
+
+    orchestrate <- storage |> Authentication.Orchestrator()
+
+    user     <- 'user' |> User()
+    password <- 'password'
+
+    user |> orchestrate[['Register']](password)
+
+    # When
+    result <- user |> orchestrate[['Authenticate']](password)
+
+    # Then
+    result |> expect.equal(TRUE)
+  })
+  it("then returns FALSE if user hash does not match password",{
+        # Given
+    storage <- get.storage()
+
+    orchestrate <- storage |> Authentication.Orchestrator()
+
+    user     <- 'user' |> User()
+    password <- 'password'
+
+    user |> orchestrate[['Register']](password)
+
+    password <- 'wrong.password'
+
+    # When
+    result <- user |> orchestrate[['Authenticate']](password)
+
+    # Then
+    result |> expect.equal(FALSE)
+  })
+})
