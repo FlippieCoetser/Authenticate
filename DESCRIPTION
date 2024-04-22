@@ -19,7 +19,8 @@ Suggests:
     Validate,
     Environment,
     Query,
-    Storage
+    Storage,
+    digest
 Remotes:
     FlippieCoetser/Validate,
     FlippieCoetser/Environment,
