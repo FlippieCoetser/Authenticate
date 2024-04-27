@@ -15,6 +15,16 @@ describe("When orchestrations <- storage |> Authentication.Orchestrator()",{
     # Then
     orchestrations |> expect.list()
   })
+  it("then orchestrations contains 'Find.User' orchestration",{
+    # Given
+    storage <- get.storage()
+
+    # When
+    orchestrations <- storage |> Authentication.Orchestrator()
+
+    # Then
+    orchestrations[['Find.User']] |> expect.exist()
+  })
   it("then orchestrations contains 'Register' orchestration",{
     # Given
     storage <- get.storage()
@@ -44,6 +54,37 @@ describe("When orchestrations <- storage |> Authentication.Orchestrator()",{
 
     # Then
     orchestrations[['Authenticate']] |> expect.exist()
+  })
+})
+
+describe("When username |> orchestrate[['Find.User']]()",{
+  it("then returns TRUE if user with matching username found in storage",{
+    # Given
+    storage <- get.storage()
+
+    orchestrate <- storage |> Authentication.Orchestrator()
+
+    user <-  Users |> tail(1)
+
+    # When
+    result <- user[['username']] |> orchestrate[['Find.User']]()
+
+    # Then
+    result |> expect.equal(user)
+  })
+  it("then returns FALSE if no user with matching username found in storage",{
+    # Given
+    storage <- get.storage()
+
+    orchestrate <- storage |> Authentication.Orchestrator()
+
+    user <- 'not.existing.user' |> User()
+
+    # When
+    result <- user[['username']] |> orchestrate[['Find.User']]()
+
+    # Then
+    result |> expect.rows(0)
   })
 })
 
