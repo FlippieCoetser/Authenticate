@@ -1,6 +1,6 @@
 Package: Authenticate
 Title: R Shiny Authentication Module
-Version: 0.0.1.0009
+Version: 0.0.1.0010
 Authors@R: 
     person(given = "Flippie",
            family = "Coetser",
