@@ -1,10 +1,12 @@
-Authentication.Controller <- \(id, storage, app) {
+Authentication.Controller <- \(id, storage, app, debug = FALSE) {
   shiny::moduleServer(
     id,
-    \(input, output, session) {  
-      validate <- Authentication.Validator()
+    \(input, output, session) { 
+      log <- \(message) if (debug) print(message)
 
-      User.data <- storage |> Authentication.Orchestrator()
+      validate <- Authenticator.Validator()
+
+      data <- storage |> Authentication.Orchestrator()
       
       user <- shiny::reactiveValues()
       user[['username']] <- NULL
@@ -19,18 +21,64 @@ Authentication.Controller <- \(id, storage, app) {
       shiny::observeEvent(input[["logout"]],      { authenticator[["logout"]]()                  })
       shiny::observeEvent(input[["login"]],       { authenticator[["login"]]()                   })
 
+      # UI Modal Dialogs
+      showMissingUsername <- \(invoke, target) {
+        if (invoke) {
+          message <- paste0("Missing Username")
+          shiny::showModal(Invalid.Input.Modal(session,message,target))
+        }
+      }
+      showMissingPassword <- \(invoke, target) {
+        if (invoke) {
+          message <- paste0("Missing Password")
+          shiny::showModal(Invalid.Input.Modal(session,message,target))
+        }
+      }
+      showMissingPasswordRepeat <- \(invoke, target) {
+        if (invoke) {
+          message <- paste0("Missing Password")
+          shiny::showModal(Invalid.Input.Modal(session,message,target))
+        }
+      }
+      showInvalidUsername <- \(invoke, target) {
+        if (invoke) {
+          message <- paste0("Username: ", input[['username']], " not registered")
+          shiny::showModal(Invalid.Input.Modal(session,message,target))
+        }
+      }
+      showIncorrectPassword <- \(invoke, target) {
+        if (invoke) {
+          message <- paste0("Incorrect Password for: ", input[['username']])
+          shiny::showModal(Invalid.Input.Modal(session,message,target))
+        }
+      }
+      showMisMatchPasswords <- \(invoke, target) {
+        if (invoke) {
+          message <- paste0("Passwords to not match")
+          shiny::showModal(Invalid.Input.Modal(session,message,target))
+        }
+      }
+      showInvalidUsername <- \(invoke, target) {
+        if (invoke) {
+          message <- paste0("Unregistered Username: ", input[['username']])
+          shiny::showModal(Invalid.Input.Modal(session,message,target))
+        }
+      }
+
       # UI Element Visibility
       Visibility <- shiny::reactiveValues()
 
       authenticator <- NULL
       authenticator[['Start']] <- NULL
       authenticator[['Initialize']]   <- \() {
+        log('Initialize')
         Visibility[['username']] <- FALSE
         Visibility[['logout']]   <- FALSE
         Visibility[['login']]    <- FALSE
         shiny::showModal(Authentication.Modal.Start(session))
       }
       authenticator[['Start']][['login.guest']]  <- \() {
+        log('Login Guest')
         Visibility[['username']] <- FALSE
         Visibility[['logout']]   <- FALSE 
         Visibility[['login']]    <- TRUE
@@ -38,7 +86,7 @@ Authentication.Controller <- \(id, storage, app) {
         shiny::removeModal(session)
       }
       authenticator[['Start']][['login.user']]   <- \() {
-        print('Login User')
+        log('Login User')
         Visibility[['username']] <- FALSE
         Visibility[['logout']]   <- FALSE
         Visibility[['login']]    <- FALSE
@@ -46,7 +94,7 @@ Authentication.Controller <- \(id, storage, app) {
         shiny::showModal(Authentication.Modal.Login(session))
       }
       authenticator[['Start']][['signup']]       <- \() {
-        print('Signup User')
+        log('Signup User')
         Visibility[['username']] <- FALSE
         Visibility[['logout']]   <- FALSE
         Visibility[['login']]    <- FALSE
@@ -56,26 +104,27 @@ Authentication.Controller <- \(id, storage, app) {
 
       authenticator[['Login']] <- NULL
       authenticator[['Login']][['authenticate']] <- \() {
-        print('Authenticate User')
         tryCatch(
           {
-            print(input[['username']])
-            input[['username']] |> validate[['UsernameEmpty']]()
+            log('Validate User Credentials')
+            input[['username']] |> validate[['Has.Username']]()
+            input[['username']] |> 
+              User() |> 
+              data[['Match.Username']]() |> 
+              validate[['Registered.Username']]()
 
-            input[['password']] |> validate[['PasswordEmpty']]()
+            input[['password']] |> validate[['Has.Password']]()
 
-            input[['username']] |> User() |> 
-              User.data[['Match.Username']]() |> validate[['AccountExist']]()
-
+            log('Authenticate User')
             input[['username']] |> User() |>
-              User.data[['Authenticate']](input[['password']]) |>
-              validate[['CorrectPassword']]()
+              data[['Authenticate']](input[['password']]) |>
+              validate[['Correct.Password']]()
             
+            # Update State
             user[['username']] <- input[['username']]
             app[['username']]  <- input[['username']]
 
-            print(paste0("User: ", user[['username']]))
-
+            # Set Component Visibility
             Visibility[['username']] <- TRUE
             Visibility[['logout']]   <- TRUE
             Visibility[['login']]    <- FALSE
@@ -86,57 +135,42 @@ Authentication.Controller <- \(id, storage, app) {
 
             shiny::removeModal(session)
 
-            showMissingUsername <- \(invoke) {
-              if (invoke) {
-                shiny::showModal(Missing.Input.Modal(session,"Username","login.user"))
-              }
-            }
-            showMissingPassword <- \(invoke) {
-              if (invoke) {
-                shiny::showModal(Missing.Input.Modal(session,"Password","login.user"))
-              }
-            }
-            showInvalidUsername <- \(invoke) {
-              if (invoke) {
-                shiny::showModal(Error.Invalid.Username(session,"login.user"))
-              }
-            }
-            showIncorrectPassword <- \(invoke) {
-              if (invoke) {
-                shiny::showModal(Error.Invalid.Password(session,"login.user"))
-              }
-            }
+            'Field.Missing: Username' |> grepl(error) |> showMissingUsername("login.user")
+            'Field.Invalid: Unregistered Username' |> grepl(error) |> showInvalidUsername("login.user")
 
-            'no Username entered'     |> grepl(error) |> showMissingUsername()
-            'no Password entered'     |> grepl(error) |> showMissingPassword()
-            'Username not registered' |> grepl(error) |> showInvalidUsername()
-            'Incorrect Password'      |> grepl(error) |> showIncorrectPassword()
+            'Field.Missing: Password' |> grepl(error) |> showMissingPassword("login.user")
+
+            'Field.Invalid: Incorrect Password'    |> grepl(error) |> showIncorrectPassword("login.user")
           }
         )
       }
 
       authenticator[['Signup']] <- NULL
       authenticator[['Signup']][['register']] <- \() {
-        print('Register User')
         tryCatch(
           {
-            input[['username']] |> validate[['UsernameEmpty']]()
+            log('Validate User Registration')
+            input[['username']] |> validate[['Has.Username']]()
+            input[['username']] |> 
+              User() |> 
+              data[['Match.Username']]() |> 
+              validate[['Unregistered.Username']]()
 
-            input[['password']] |> validate[['PasswordEmpty']]()
+            input[['password']] |> validate[['Has.Password']]()
+            input[['passwordRepeat']] |> validate[['Has.RepeatedPassword']]()
+            input[['password']] |> 
+              validate[['Match.Passwords']](input[['passwordRepeat']])
 
-            input[['passwordRepeat']] |> validate[['PasswordRepeatEmpty']]()
-
-            input[['password']] |> validate[['PasswordsMatch']](input[['passwordRepeat']])
-
-            input[['username']] |> User() |> 
-              User.data[['Match.Username']]() |> validate[['InvalidUsername']]()
-
+            log('Register User')
             input[['username']] |>
-              User() |> User.data[['Register']](input[['password']])
+              User() |> 
+              data[['Register']](input[['password']])
 
+            # Update State
             user[['username']] <- input[['username']]
             app[['username']]  <- input[['username']]
 
+            # Set Component Visibility
             Visibility[['username']] <- TRUE
             Visibility[['logout']]   <- TRUE
             Visibility[['login']]    <- FALSE
@@ -146,63 +180,56 @@ Authentication.Controller <- \(id, storage, app) {
           error = \(error) {
             shiny::removeModal(session)
 
-            showMissingUsername <- \(invoke) {
-              if (invoke) {
-                shiny::showModal(Error.Missing.Username(session,"signup"))
-              }
-            }
-            showMissingPassword <- \(invoke) {
-              if (invoke) {
-                shiny::showModal(Error.Missing.Password(session,"signup"))
-              }
-            }
-            showMissingPasswordRepeat <- \(invoke) {
-              if (invoke) {
-                shiny::showModal(Error.Missing.PasswordRepeat(session,"signup"))
-              }
-            }
-            showMisMatchPasswords <- \(invoke) {
-              if (invoke) {
-                shiny::showModal(Error.MisMatch.Passwords(session,"signup"))
-              }
-            }
-            showInvalidUsername <- \(invoke) {
-              if (invoke) {
-                shiny::showModal(Error.Invalid.Account(session,"signup"))
-              }
-            }
+            'Field.Missing: Username' |> grepl(error) |> showMissingUsername("signup")
+            'Field.Invalid: Username' |> grepl(error) |> showInvalidUsername("signup")
 
-            'no Username entered' |> grepl(error) |> showMissingUsername()
-            'no Password entered' |> grepl(error) |> showMissingPassword()
-            'no second Password entered' |> grepl(error) |> showMissingPasswordRepeat()
-            'Passwords do not match' |> grepl(error) |> showMisMatchPasswords()
-            'Username already registered' |> grepl(error) |> showInvalidUsername()
+            'Field.Missing: Password' |> grepl(error) |> showMissingPassword("signup")
+            'Field.Missing: Repeated Password' |> grepl(error) |> showMissingPasswordRepeat("signup")
+
+            'Field.Invalid: Repeated Password' |> grepl(error) |> showMisMatchPasswords("signup")  
           }
         )
       }
 
       authenticator[['cancel']] <- \() {
+        log('Cancel')
+
+        # Set State
         user[['username']] <- NULL
         app[['username']]  <- NULL
+
+        # Set Component Visibility
         Visibility[['username']] <- FALSE
         Visibility[['logout']]   <- FALSE
         Visibility[['login']]    <- FALSE
+
+
         shiny::removeModal(session)
         shiny::showModal(Authentication.Modal.Start(session))
       }
       authenticator[['logout']] <- \() {
-        print('Logout User')
+        log('Logout User')
+
+        # Set State
         user[['username']] <- NULL
         app[['username']]  <- NULL
+
+        # Set Component Visibility
         Visibility[['username']] <- FALSE
         Visibility[['logout']]   <- FALSE
         Visibility[['login']]    <- FALSE
+
+
         shiny::showModal(Authentication.Modal.Start(session))
       }
       authenticator[['login']]  <- \() {
-        print('Login User')
+        log('Login User')
+
+        # Set State
         user[['username']] <- NULL
         app[['username']]  <- NULL
+
+        
         Visibility[['username']] <- FALSE
         Visibility[['logout']]   <- FALSE
         Visibility[['login']]    <- FALSE
