@@ -68,7 +68,7 @@ Authentication.Controller <- \(id, storage, app) {
             input[['password']] |> validate[['PasswordEmpty']]()
 
             input[['username']] |> User() |> 
-              User.data[['Matching.Username']]() |> validate[['AccountExist']]()
+              User.data[['Match.Username']]() |> validate[['AccountExist']]()
 
             input[['username']] |> User() |>
               User.data[['Authenticate']](input[['password']]) |>
@@ -132,7 +132,7 @@ Authentication.Controller <- \(id, storage, app) {
             input[['password']] |> validate[['PasswordsMatch']](input[['passwordRepeat']])
 
             input[['username']] |> User() |> 
-              User.data[['Matching.Username']]() |> validate[['InvalidUsername']]()
+              User.data[['Match.Username']]() |> validate[['InvalidUsername']]()
 
             input[['username']] |>
               User() |> User.data[['Register']](input[['password']])
