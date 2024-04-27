@@ -41,6 +41,7 @@ Authentication.Controller <- \(id, storage, app) {
         shiny::removeModal(session)
       }
       controller[['Start']][['login.user']]   <- \() {
+        print('Login User')
         Visibility[['username']] <- FALSE
         Visibility[['logout']]   <- FALSE
         Visibility[['login']]    <- FALSE
@@ -48,6 +49,7 @@ Authentication.Controller <- \(id, storage, app) {
         shiny::showModal(Authentication.Modal.Login(session))
       }
       controller[['Start']][['signup']]       <- \() {
+        print('Signup User')
         Visibility[['username']] <- FALSE
         Visibility[['logout']]   <- FALSE
         Visibility[['login']]    <- FALSE
@@ -57,6 +59,7 @@ Authentication.Controller <- \(id, storage, app) {
 
       controller[['Login']] <- NULL
       controller[['Login']][['authenticate']] <- \() {
+        print('Authenticate User')
         tryCatch(
           {
             input[['username']] |> validate[['UsernameEmpty']]()
@@ -115,6 +118,7 @@ Authentication.Controller <- \(id, storage, app) {
 
       controller[['Signup']] <- NULL
       controller[['Signup']][['register']] <- \() {
+        print('Register User')
         tryCatch(
           {
             input[['username']] |> validate[['UsernameEmpty']]()
@@ -188,14 +192,16 @@ Authentication.Controller <- \(id, storage, app) {
         shiny::showModal(Authentication.Modal.Start(session))
       }
       controller[['logout']] <- \() {
+        print('Logout User')
         user[['username']] <- NULL
-        app[['Username']]  <- NULL
+        app[['username']]  <- NULL
         Visibility[['username']] <- FALSE
         Visibility[['logout']]   <- FALSE
         Visibility[['login']]    <- FALSE
         shiny::showModal(Authentication.Modal.Start(session))
       }
       controller[['login']]  <- \() {
+        print('Login User')
         user[['username']] <- NULL
         app[['username']]  <- NULL
         Visibility[['username']] <- FALSE
