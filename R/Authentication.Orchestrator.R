@@ -19,6 +19,9 @@ Authentication.Orchestrator <- \(storage) {
     Encryption.Processor()
 
   orchestrations <- list()
+  orchestrations[['Find.User']]         <- \(username) {
+    username |> process[['Find.User']]()
+  }
   orchestrations[['Register']]          <- \(user, password) {
     user |> encrypt[['Set.Hash']](password) |> process[['Add']]()  
   }
