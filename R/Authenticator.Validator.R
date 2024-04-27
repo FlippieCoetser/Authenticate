@@ -23,7 +23,7 @@ Authenticator.Validator <- \() {
     field |> isFALSE() |> exception[['Invalid.Password']]() 
     return(field) 
   }
-  validators[['Incorrect.Password']] <- \(field) {
+  validators[['Correct.Password']] <- \(field) {
     field |> isFALSE() |> exception[['Incorrect.Password']]() 
     return(field) 
   }

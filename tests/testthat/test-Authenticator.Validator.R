@@ -47,6 +47,13 @@ describe("When validators <- Authenticator.Validator()",{
     # Then
     validators[['Valid.Password']] |> expect.exist()
   })
+  it("then validators contains 'Correct.Password' validator",{
+    # When
+    validators <- Authenticator.Validator()
+    
+    # Then
+    validators[['Correct.Password']] |> expect.exist()
+  })
   it("then validators contains 'Has.RepeatedPassword' validator",{
     # When
     validators <- Authenticator.Validator()
@@ -242,6 +249,43 @@ describe("When field |> validate[['Valid.Password']]()",{
     field <- TRUE 
 
     output <- field |> validate[['Valid.Password']]()
+
+    # Then
+    output |> expect.equal.data(field)
+  })
+})
+
+describe("When field |> validate[['Correct.Password']]()",{
+  it("then no exception is thrown if field is TRUE",{
+    # Given
+    validate <- Authenticator.Validator()
+
+    # When
+    field <- TRUE 
+
+    # Then
+    field |> validate[['Correct.Password']]() |> expect.no.error()
+  })
+  it("then an exception is thrown if field is FALSE",{
+    # Given
+    validate <- Authenticator.Validator()
+
+    expected.error <- "Field.Invalid: Incorrect Password"
+
+    # When
+    field <- FALSE
+
+    # Then
+    field |> validate[['Correct.Password']]() |> expect.error(expected.error)
+  })
+  it("then field is returned if field is TRUE",{
+    # Given
+    validate <- Authenticator.Validator()
+
+    # When
+    field <- TRUE 
+
+    output <- field |> validate[['Correct.Password']]()
 
     # Then
     output |> expect.equal.data(field)
