@@ -85,6 +85,7 @@ Authentication.Controller <- \(id, storage, app) {
             shiny::removeModal(session)
           },
           error = \(error) {
+            print(error)
             shiny::removeModal(session)
 
             showMissingUsername <- \(invoke) {
