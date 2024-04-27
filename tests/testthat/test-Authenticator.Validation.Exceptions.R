@@ -47,6 +47,13 @@ describe("When exceptions <- Authenticator.Validation.Exceptions()",{
     # Then
     exceptions[['Invalid.Password']] |> expect.exist()
   })
+  it("then exceptions contains 'Incorrect.Password' exception",{
+    # When
+    exceptions <- Authenticator.Validation.Exceptions()
+    
+    # Then
+    exceptions[['Incorrect.Password']] |> expect.exist()
+  })
   it("then exceptions contains 'Invalid.Repeated.Password' exception",{
     # When
     exceptions <- Authenticator.Validation.Exceptions()
@@ -78,7 +85,7 @@ describe("When input |> exception[['Missing.Username']]()", {
     # Given
     exception <- Authenticator.Validation.Exceptions()
     
-    expected.error <- "Missing Username"
+    expected.error <- "Field.Missing: Username"
     # When
     input <- TRUE
     
@@ -102,7 +109,7 @@ describe("When input |> exception[['Missing.Password']]()", {
     # Given
     exception <- Authenticator.Validation.Exceptions()
     
-    expected.error <- "Missing Password"
+    expected.error <- "Field.Missing: Password"
     # When
     input <- TRUE
     
@@ -126,7 +133,7 @@ describe("When input |> exception[['Missing.Repeated.Password']]()", {
     # Given
     exception <- Authenticator.Validation.Exceptions()
     
-    expected.error <- "Missing Repeated Password"
+    expected.error <- "Field.Missing: Repeated Password"
     # When
     input <- TRUE
     
@@ -150,7 +157,7 @@ describe("When input |> exception[['Unregistered.Username']]()", {
     # Given
     exception <- Authenticator.Validation.Exceptions()
     
-    expected.error <- "Unregistered Username"
+    expected.error <- "Field.Invalid: Unregistered Username"
     # When
     input <- TRUE
     
@@ -174,12 +181,36 @@ describe("When input |> exception[['Invalid.Password']]()", {
     # Given
     exception <- Authenticator.Validation.Exceptions()
     
-    expected.error <- "Invalid Password"
+    expected.error <- "Field.Invalid: Password"
     # When
     input <- TRUE
     
     # Then
     input |> exception[['Invalid.Password']]() |> expect.error(expected.error)
+  })
+})
+
+describe("When input |> exception[['Incorrect.Password']]()", {
+  it("then no exception is thrown if input is FALSE", {
+    # Given
+    exception <- Authenticator.Validation.Exceptions()
+    
+    # When
+    input <- FALSE
+    
+    # Then
+    input |> exception[['Incorrect.Password']]() |> expect.no.error()
+  })
+  it("then an exception is thrown if input is TRUE", {
+    # Given
+    exception <- Authenticator.Validation.Exceptions()
+    
+    expected.error <- "Field.Invalid: Incorrect Password"
+    # When
+    input <- TRUE
+    
+    # Then
+    input |> exception[['Incorrect.Password']]() |> expect.error(expected.error)
   })
 })
 
@@ -198,7 +229,7 @@ describe("When input |> exception[['Invalid.Repeated.Password']]()", {
     # Given
     exception <- Authenticator.Validation.Exceptions()
     
-    expected.error <- "Invalid Repeated Password"
+    expected.error <- "Field.Invalid: Repeated Password"
     # When
     input <- TRUE
     
@@ -222,7 +253,7 @@ describe("When input |> exception[['Invalid.Username']]()", {
     # Given
     exception <- Authenticator.Validation.Exceptions()
     
-    expected.error <- "Invalid Username"
+    expected.error <- "Field.Invalid: Username"
     # When
     input <- TRUE
     
