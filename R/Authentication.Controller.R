@@ -1,4 +1,3 @@
-
 Authentication.Controller <- \(id, storage, app) {
   shiny::moduleServer(
     id,
@@ -218,3 +217,32 @@ Authentication.Controller <- \(id, storage, app) {
     }
   )
 }
+
+#' Authentication Controller for Shiny Application
+#'
+#' This function manages user authentication within a Shiny application. It
+#' sets up a module server for handling user interactions related to login,
+#' registration, and session management. It includes mechanisms to validate
+#' user inputs, manage user session states, and dynamically update UI elements
+#' based on the authentication state.
+#'
+#' @param id A unique identifier for the Shiny module.
+#' @param storage A storage backend, presumably for managing user data.
+#' @param app A reference to the main Shiny app object, used to manage global states.
+#'
+#' @details
+#' The function creates a series of event observers and reactive expressions that:
+#' - Handle guest and registered user logins.
+#' - Manage user registration.
+#' - Authenticate user credentials.
+#' - Provide functionality for user logout and cancellation of operations.
+#' - Dynamically control the visibility of UI elements such as username display and login/logout buttons based on the user's authentication status.
+#'
+#' Each user interaction is validated through a set of predefined validation functions,
+#' and the UI is updated accordingly to reflect the current state. Errors in user input
+#' are handled gracefully, providing modal dialogs to inform users of specific issues.
+#'
+#' @return A Shiny module server function that can be invoked with `callModule`.
+#'
+#' @export
+Controller <- Authentication.Controller
