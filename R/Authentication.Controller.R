@@ -263,6 +263,7 @@ Authentication.Controller <- \(id, storage, app, debug = FALSE) {
 #' @param id A unique identifier for the Shiny module.
 #' @param storage A storage backend, presumably for managing user data.
 #' @param app A reference to the main Shiny app object, used to manage global states.
+#' @param debug A logical value indicating whether to print debug messages.
 #'
 #' @details
 #' The function creates a series of event observers and reactive expressions that:
