@@ -26,33 +26,33 @@ describe("When validators <- User.Validator()",{
     # Then
     validators[['Exists']] |> expect.exist()
   })
-  it("then validators contains 'HasId' validator",{
+  it("then validators contains 'Has.Id' validator",{
     # When
     validators <- User.Validator()
     
     # Then
-    validators[['HasId']] |> expect.exist()
+    validators[['Has.Id']] |> expect.exist()
   })
-  it("then validators contains 'HasUsername' validator",{
+  it("then validators contains 'Has.Username' validator",{
     # When
     validators <- User.Validator()
     
     # Then
-    validators[['HasUsername']] |> expect.exist()
+    validators[['Has.Username']] |> expect.exist()
   })
-  it("then validators contains 'HasHash' validator",{
+  it("then validators contains 'Has.Hash' validator",{
     # When
     validators <- User.Validator()
     
     # Then
-    validators[['HasHash']] |> expect.exist()
+    validators[['Has.Hash']] |> expect.exist()
   })
-  it("then validators contains 'HasSalt' validator",{
+  it("then validators contains 'Has.Salt' validator",{
     # When
     validators <- User.Validator()
     
     # Then
-    validators[['HasSalt']] |> expect.exist()
+    validators[['Has.Salt']] |> expect.exist()
   })
   it("then validators contains 'Id' validator",{
     # When
@@ -101,7 +101,7 @@ describe("When user |> validate[['Exists']]()",{
   })
 })
 
-describe("When user |> validate[['HasId']]()",{
+describe("When user |> validate[['Has.Id']]()",{
   it("then no exception is thrown if user has 'id' attribute",{
     # Given
     validate <- User.Validator()
@@ -110,7 +110,7 @@ describe("When user |> validate[['HasId']]()",{
     user <- 'user@gmail.com' |> User()
 
     # Then
-    user |> validate[['HasId']]() |> expect.no.error()
+    user |> validate[['Has.Id']]() |> expect.no.error()
   })
   it("then an exception is thrown if user has no 'id' attribute",{
     # Given
@@ -122,7 +122,7 @@ describe("When user |> validate[['HasId']]()",{
     user <- data.frame()
 
     # Then
-    user |> validate[['HasId']]() |> expect.error(expected.error)
+    user |> validate[['Has.Id']]() |> expect.error(expected.error)
   })
   it("then user is returned if user has 'id' attribute",{
     # Given
@@ -131,14 +131,14 @@ describe("When user |> validate[['HasId']]()",{
     # When
     user <- 'user@gmail.com' |> User()
 
-    output <- user |> validate[['HasId']]() 
+    output <- user |> validate[['Has.Id']]() 
 
     # Then
     output |> expect.equal.data(user)
   })
 })
 
-describe("When user |> validate[['HasUsername']]()",{
+describe("When user |> validate[['Has.Username']]()",{
   it("then no exception is thrown if user has 'username' attribute",{
     # Given
     validate <- User.Validator()
@@ -147,7 +147,7 @@ describe("When user |> validate[['HasUsername']]()",{
     user <- 'user@gmail.com' |> User()
 
     # Then
-    user |> validate[['HasUsername']]() |> expect.no.error()
+    user |> validate[['Has.Username']]() |> expect.no.error()
   })
   it("then an exception is thrown if user has no 'username' attribute",{
     # Given
@@ -159,7 +159,7 @@ describe("When user |> validate[['HasUsername']]()",{
     user <- data.frame()
 
     # Then
-    user |> validate[['HasUsername']]() |> expect.error(expected.error)
+    user |> validate[['Has.Username']]() |> expect.error(expected.error)
   })
   it("then user is returned if user has 'username' attribute",{
     # Given
@@ -168,14 +168,14 @@ describe("When user |> validate[['HasUsername']]()",{
     # When
     user <- 'user@gmail.com' |> User()
 
-    output <- user |> validate[['HasUsername']]()
+    output <- user |> validate[['Has.Username']]()
 
     # Then
     output |> expect.equal.data(user)
   })
 })
 
-describe("When user |> validate[['HasHash']]()",{
+describe("When user |> validate[['Has.Hash']]()",{
   it("then no exception is thrown if user has 'hash' attribute",{
     # Given
     validate <- User.Validator()
@@ -184,7 +184,7 @@ describe("When user |> validate[['HasHash']]()",{
     user <- 'user@gmail.com' |> User()
 
     # Then
-    user |> validate[['HasHash']]() |> expect.no.error()
+    user |> validate[['Has.Hash']]() |> expect.no.error()
   })
   it("then an exception is thrown if user has no 'hash' attribute",{
     # Given
@@ -196,7 +196,7 @@ describe("When user |> validate[['HasHash']]()",{
     user <- data.frame()
 
     # Then
-    user |> validate[['HasHash']]() |> expect.error(expected.error)
+    user |> validate[['Has.Hash']]() |> expect.error(expected.error)
   })
   it("then user is returned if user has 'hash' attribute",{
     # Given
@@ -205,14 +205,14 @@ describe("When user |> validate[['HasHash']]()",{
     # When
     user <- 'user@gmail.com' |> User()
 
-    output <- user |> validate[['HasHash']]()
+    output <- user |> validate[['Has.Hash']]()
 
     # Then
     output |> expect.equal.data(user)
   })
 })
 
-describe("When user |> validate[['HasSalt']]()",{
+describe("When user |> validate[['Has.Salt']]()",{
   it("then no exception is thrown if user has 'salt' attribute",{
     # Given
     validate <- User.Validator()
@@ -221,7 +221,7 @@ describe("When user |> validate[['HasSalt']]()",{
     user <- 'user@gmail.com' |> User()
 
     # Then
-    user |> validate[['HasSalt']]() |> expect.no.error()
+    user |> validate[['Has.Salt']]() |> expect.no.error()
   })
   it("then an exception is thrown if user has no 'salt' attribute",{
     # Given
@@ -233,7 +233,7 @@ describe("When user |> validate[['HasSalt']]()",{
     user <- data.frame()
 
     # Then
-    user |> validate[['HasSalt']]() |> expect.error(expected.error)
+    user |> validate[['Has.Salt']]() |> expect.error(expected.error)
   })
   it("then user is returned if user has 'salt' attribute",{
     # Given
@@ -242,7 +242,7 @@ describe("When user |> validate[['HasSalt']]()",{
     # When
     user <- 'user@gmail.com' |> User()
 
-    output <- user |> validate[['HasSalt']]()
+    output <- user |> validate[['Has.Salt']]()
 
     # Then
     output |> expect.equal.data(user)
