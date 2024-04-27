@@ -62,6 +62,7 @@ Authentication.Controller <- \(id, storage, app) {
         print('Authenticate User')
         tryCatch(
           {
+            print(input[['username']])
             input[['username']] |> validate[['UsernameEmpty']]()
 
             input[['password']] |> validate[['PasswordEmpty']]()
