@@ -35,8 +35,8 @@ User.Processor <- \(service) {
     (matching.user[['hash']] == user[['hash']]) |> any()
   }
   processors[['Match.Username']]  <- \(user) {
-    matching.user <- user[['id']] |> service[['RetrieveById']]()
-    (matching.user[['username']] == user[['username']]) |> any()
+    users <- service[['Retrieve']]()
+    (users[['username']] == user[['username']]) |> any()
   }
   return(processors)
 }
