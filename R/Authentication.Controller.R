@@ -10,37 +10,34 @@ Authentication.Controller <- \(id, storage, app) {
       user[['username']] <- NULL
 
       # UI Event Binding
-      shiny::observeEvent(input[["login.guest"]], { controller[['Start']][["login.guest"]]()  })
-      shiny::observeEvent(input[["login.user"]],  { controller[['Start']][["login.user"]]()   })
-      shiny::observeEvent(input[["signup"]],      { controller[['Start']][["signup"]]()       })
-      shiny::observeEvent(input[["authenticate"]],{ controller[['Login']][["authenticate"]]() })
-      shiny::observeEvent(input[["register"]],    { controller[['Signup']][["register"]]()    })
-      shiny::observeEvent(input[["cancel"]],      { controller[['cancel']]()                  })
-      shiny::observeEvent(input[["logout"]],      { controller[["logout"]]()                  })
-      shiny::observeEvent(input[["login"]],       { controller[["login"]]()                   })
+      shiny::observeEvent(input[["login.guest"]], { authenticator[['Start']][["login.guest"]]()  })
+      shiny::observeEvent(input[["login.user"]],  { authenticator[['Start']][["login.user"]]()   })
+      shiny::observeEvent(input[["signup"]],      { authenticator[['Start']][["signup"]]()       })
+      shiny::observeEvent(input[["authenticate"]],{ authenticator[['Login']][["authenticate"]]() })
+      shiny::observeEvent(input[["register"]],    { authenticator[['Signup']][["register"]]()    })
+      shiny::observeEvent(input[["cancel"]],      { authenticator[['cancel']]()                  })
+      shiny::observeEvent(input[["logout"]],      { authenticator[["logout"]]()                  })
+      shiny::observeEvent(input[["login"]],       { authenticator[["login"]]()                   })
 
       # UI Element Visibility
       Visibility <- shiny::reactiveValues()
-      Visibility[['username']] <- FALSE
-      Visibility[['logout']]   <- FALSE
-      Visibility[['login']]    <- FALSE
 
-      controller <- NULL
-      controller[['Start']] <- NULL
-      controller[['Start']][['Initialize']]   <- \() {
+      authenticator <- NULL
+      authenticator[['Start']] <- NULL
+      authenticator[['Initialize']]   <- \() {
         Visibility[['username']] <- FALSE
         Visibility[['logout']]   <- FALSE
         Visibility[['login']]    <- FALSE
         shiny::showModal(Authentication.Modal.Start(session))
       }
-      controller[['Start']][['login.guest']]  <- \() {
+      authenticator[['Start']][['login.guest']]  <- \() {
         Visibility[['username']] <- FALSE
         Visibility[['logout']]   <- FALSE 
         Visibility[['login']]    <- TRUE
         app[['username']] <- ''
         shiny::removeModal(session)
       }
-      controller[['Start']][['login.user']]   <- \() {
+      authenticator[['Start']][['login.user']]   <- \() {
         print('Login User')
         Visibility[['username']] <- FALSE
         Visibility[['logout']]   <- FALSE
@@ -48,7 +45,7 @@ Authentication.Controller <- \(id, storage, app) {
         shiny::removeModal(session)
         shiny::showModal(Authentication.Modal.Login(session))
       }
-      controller[['Start']][['signup']]       <- \() {
+      authenticator[['Start']][['signup']]       <- \() {
         print('Signup User')
         Visibility[['username']] <- FALSE
         Visibility[['logout']]   <- FALSE
@@ -57,8 +54,8 @@ Authentication.Controller <- \(id, storage, app) {
         shiny::showModal(Authentication.Modal.Signup(session))
       }
 
-      controller[['Login']] <- NULL
-      controller[['Login']][['authenticate']] <- \() {
+      authenticator[['Login']] <- NULL
+      authenticator[['Login']][['authenticate']] <- \() {
         print('Authenticate User')
         tryCatch(
           {
@@ -86,17 +83,17 @@ Authentication.Controller <- \(id, storage, app) {
             shiny::removeModal(session)
           },
           error = \(error) {
-            print(error)
+
             shiny::removeModal(session)
 
             showMissingUsername <- \(invoke) {
               if (invoke) {
-                shiny::showModal(Error.Missing.Username(session,"login.user"))
+                shiny::showModal(Missing.Input.Modal(session,"Username","login.user"))
               }
             }
             showMissingPassword <- \(invoke) {
               if (invoke) {
-                shiny::showModal(Error.Missing.Password(session,"login.user"))
+                shiny::showModal(Missing.Input.Modal(session,"Password","login.user"))
               }
             }
             showInvalidUsername <- \(invoke) {
@@ -118,8 +115,8 @@ Authentication.Controller <- \(id, storage, app) {
         )
       }
 
-      controller[['Signup']] <- NULL
-      controller[['Signup']][['register']] <- \() {
+      authenticator[['Signup']] <- NULL
+      authenticator[['Signup']][['register']] <- \() {
         print('Register User')
         tryCatch(
           {
@@ -184,7 +181,7 @@ Authentication.Controller <- \(id, storage, app) {
         )
       }
 
-      controller[['cancel']] <- \() {
+      authenticator[['cancel']] <- \() {
         user[['username']] <- NULL
         app[['username']]  <- NULL
         Visibility[['username']] <- FALSE
@@ -193,7 +190,7 @@ Authentication.Controller <- \(id, storage, app) {
         shiny::removeModal(session)
         shiny::showModal(Authentication.Modal.Start(session))
       }
-      controller[['logout']] <- \() {
+      authenticator[['logout']] <- \() {
         print('Logout User')
         user[['username']] <- NULL
         app[['username']]  <- NULL
@@ -202,7 +199,7 @@ Authentication.Controller <- \(id, storage, app) {
         Visibility[['login']]    <- FALSE
         shiny::showModal(Authentication.Modal.Start(session))
       }
-      controller[['login']]  <- \() {
+      authenticator[['login']]  <- \() {
         print('Login User')
         user[['username']] <- NULL
         app[['username']]  <- NULL
@@ -223,7 +220,7 @@ Authentication.Controller <- \(id, storage, app) {
       shiny::outputOptions(output, 'logoutIsVisible'  , suspendWhenHidden = FALSE)
       shiny::outputOptions(output, 'loginIsVisible'   , suspendWhenHidden = FALSE)
 
-      controller[['Start']][['Initialize']]()
+      authenticator[['Initialize']]()
     }
   )
 }
