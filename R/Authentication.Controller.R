@@ -1,12 +1,11 @@
 
-Authentication.Controller <- \(id, data, app) {
+Authentication.Controller <- \(id, storage, app) {
   shiny::moduleServer(
     id,
     \(input, output, session) {  
       validate <- Authentication.Validator()
 
-      # RenoPilot.Data::User.Orchestrator
-      User.data <- data[['User']]
+      User.data <- storage |> Authentication.Orchestrator()
       
       user <- shiny::reactiveValues()
       user[['username']] <- NULL

@@ -22,7 +22,7 @@ Authentication.Orchestrator <- \(storage) {
   orchestrations[['Register']]          <- \(user, password) {
     user |> encrypt[['Set.Hash']](password) |> process[['Add']]()  
   }
-  orchestrations[['Match.Username']] <- \(user) {
+  orchestrations[['Match.Username']]    <- \(user) {
     user |> process[['Match.Username']]()
   }
   orchestrations[['Authenticate']]      <- \(user, password) {
