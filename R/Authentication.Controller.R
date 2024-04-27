@@ -37,7 +37,7 @@ Authentication.Controller <- \(id, storage, app) {
         Visibility[['username']] <- FALSE
         Visibility[['logout']]   <- FALSE 
         Visibility[['login']]    <- TRUE
-        app[['Username']] <- ''
+        app[['username']] <- ''
         shiny::removeModal(session)
       }
       controller[['Start']][['login.user']]   <- \() {
@@ -71,7 +71,9 @@ Authentication.Controller <- \(id, storage, app) {
               validate[['CorrectPassword']]()
             
             user[['username']] <- input[['username']]
-            app[['Username']]  <- input[['username']]
+            app[['username']]  <- input[['username']]
+
+            print(paste0("User: ", user[['username']]))
 
             Visibility[['username']] <- TRUE
             Visibility[['logout']]   <- TRUE
@@ -130,7 +132,7 @@ Authentication.Controller <- \(id, storage, app) {
               User() |> User.data[['Register']](input[['password']])
 
             user[['username']] <- input[['username']]
-            app[['Username']]  <- input[['username']]
+            app[['username']]  <- input[['username']]
 
             Visibility[['username']] <- TRUE
             Visibility[['logout']]   <- TRUE
@@ -178,7 +180,7 @@ Authentication.Controller <- \(id, storage, app) {
 
       controller[['cancel']] <- \() {
         user[['username']] <- NULL
-        app[['Username']]  <- NULL
+        app[['username']]  <- NULL
         Visibility[['username']] <- FALSE
         Visibility[['logout']]   <- FALSE
         Visibility[['login']]    <- FALSE
@@ -195,7 +197,7 @@ Authentication.Controller <- \(id, storage, app) {
       }
       controller[['login']]  <- \() {
         user[['username']] <- NULL
-        app[['Username']]  <- NULL
+        app[['username']]  <- NULL
         Visibility[['username']] <- FALSE
         Visibility[['logout']]   <- FALSE
         Visibility[['login']]    <- FALSE
