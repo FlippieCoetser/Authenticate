@@ -4,16 +4,16 @@
 \alias{Controller}
 \title{Authentication Controller for Shiny Application}
 \usage{
-Controller(id, storage, app, debug = FALSE)
+Controller(id, storage, user = shiny::reactiveValues(), debug = FALSE)
 }
 \arguments{
 \item{id}{A unique identifier for the Shiny module.}
 
 \item{storage}{A storage backend, presumably for managing user data.}
 
-\item{app}{A reference to the main Shiny app object, used to manage global states.}
-
 \item{debug}{A logical value indicating whether to print debug messages.}
+
+\item{app}{A reference to the main Shiny app object, used to manage global states.}
 }
 \value{
 A Shiny module server function that can be invoked with \code{callModule}.
