@@ -8,10 +8,9 @@ Authentication.Controller <- \(id, storage, user = shiny::reactiveValues() , deb
       modal <- Error.Modal()
       
       # UI Element Visibility
-      Visibility <- shiny::reactiveValues()
+      visibility <- shiny::reactiveValues()
 
-      validate <- Authenticator.Validator()
-
+      # Data Access
       data <- storage |> Authentication.Orchestrator()
 
       # UI Event Binding
@@ -24,13 +23,17 @@ Authentication.Controller <- \(id, storage, user = shiny::reactiveValues() , deb
       shiny::observeEvent(input[["logout"]],      { authenticator[["logout"]]()                  })
       shiny::observeEvent(input[["login"]],       { authenticator[["login"]]()                   })
 
+      # Validation Logic
+      validate <- Authenticator.Validator()
+
+      # Business Logic
       authenticator <- NULL
       authenticator[['init']]   <- \() {
         log('Initialize')
         user[['username']] <- NULL
-        Visibility[['username']] <- FALSE
-        Visibility[['logout']]   <- FALSE
-        Visibility[['login']]    <- FALSE
+        visibility[['username']] <- FALSE
+        visibility[['logout']]   <- FALSE
+        visibility[['login']]    <- FALSE
         shiny::showModal(Authentication.Modal.Start(session))
       }
       authenticator[['login']]  <- \() {
@@ -39,9 +42,9 @@ Authentication.Controller <- \(id, storage, user = shiny::reactiveValues() , deb
         # Set State
         user[['username']] <- NULL
         
-        Visibility[['username']] <- FALSE
-        Visibility[['logout']]   <- FALSE
-        Visibility[['login']]    <- FALSE
+        visibility[['username']] <- FALSE
+        visibility[['logout']]   <- FALSE
+        visibility[['login']]    <- FALSE
         shiny::showModal(Authentication.Modal.Start(session))
       }
       authenticator[['logout']] <- \() {
@@ -50,10 +53,10 @@ Authentication.Controller <- \(id, storage, user = shiny::reactiveValues() , deb
         # Set State
         user[['username']] <- NULL
 
-        # Set Component Visibility
-        Visibility[['username']] <- FALSE
-        Visibility[['logout']]   <- FALSE
-        Visibility[['login']]    <- FALSE
+        # Set Component visibility
+        visibility[['username']] <- FALSE
+        visibility[['logout']]   <- FALSE
+        visibility[['login']]    <- FALSE
 
 
         shiny::showModal(Authentication.Modal.Start(session))
@@ -64,10 +67,10 @@ Authentication.Controller <- \(id, storage, user = shiny::reactiveValues() , deb
         # Set State
         user[['username']] <- NULL
 
-        # Set Component Visibility
-        Visibility[['username']] <- FALSE
-        Visibility[['logout']]   <- FALSE
-        Visibility[['login']]    <- FALSE
+        # Set Component visibility
+        visibility[['username']] <- FALSE
+        visibility[['logout']]   <- FALSE
+        visibility[['login']]    <- FALSE
 
 
         shiny::removeModal(session)
@@ -77,25 +80,25 @@ Authentication.Controller <- \(id, storage, user = shiny::reactiveValues() , deb
       authenticator[['Start']] <- NULL
       authenticator[['Start']][['login.guest']]  <- \() {
         log('Login Guest')
-        Visibility[['username']] <- FALSE
-        Visibility[['logout']]   <- FALSE 
-        Visibility[['login']]    <- TRUE
+        visibility[['username']] <- FALSE
+        visibility[['logout']]   <- FALSE 
+        visibility[['login']]    <- TRUE
         user[['username']] <- ''
         shiny::removeModal(session)
       }
       authenticator[['Start']][['login.user']]   <- \() {
         log('Login User')
-        Visibility[['username']] <- FALSE
-        Visibility[['logout']]   <- FALSE
-        Visibility[['login']]    <- FALSE
+        visibility[['username']] <- FALSE
+        visibility[['logout']]   <- FALSE
+        visibility[['login']]    <- FALSE
         shiny::removeModal(session)
         shiny::showModal(Authentication.Modal.Login(session))
       }
       authenticator[['Start']][['signup']]       <- \() {
         log('Signup User')
-        Visibility[['username']] <- FALSE
-        Visibility[['logout']]   <- FALSE
-        Visibility[['login']]    <- FALSE
+        visibility[['username']] <- FALSE
+        visibility[['logout']]   <- FALSE
+        visibility[['login']]    <- FALSE
         shiny::removeModal(session)
         shiny::showModal(Authentication.Modal.Signup(session))
       }
@@ -121,15 +124,14 @@ Authentication.Controller <- \(id, storage, user = shiny::reactiveValues() , deb
             # Update State
             user[['username']] <- input[['username']]
 
-            # Set Component Visibility
-            Visibility[['username']] <- TRUE
-            Visibility[['logout']]   <- TRUE
-            Visibility[['login']]    <- FALSE
+            # Set Component visibility
+            visibility[['username']] <- TRUE
+            visibility[['logout']]   <- TRUE
+            visibility[['login']]    <- FALSE
 
             shiny::removeModal(session)
           },
           error = \(error) {
-
             shiny::removeModal(session)
 
             'Field.Missing: Username' |> 
@@ -171,10 +173,10 @@ Authentication.Controller <- \(id, storage, user = shiny::reactiveValues() , deb
             # Update State
             user[['username']] <- input[['username']]
 
-            # Set Component Visibility
-            Visibility[['username']] <- TRUE
-            Visibility[['logout']]   <- TRUE
-            Visibility[['login']]    <- FALSE
+            # Set Component visibility
+            visibility[['username']] <- TRUE
+            visibility[['logout']]   <- TRUE
+            visibility[['login']]    <- FALSE
 
             shiny::removeModal(session)
           },
@@ -200,10 +202,10 @@ Authentication.Controller <- \(id, storage, user = shiny::reactiveValues() , deb
       # UI Data Bindings
       output[['username']] <- shiny::renderText({ user[['username']] })
 
-      # UI Element Visibility Binding
-      output[['UsernameIsVisible']] <- shiny::reactive({ Visibility[['username']] })
-      output[['logoutIsVisible']]   <- shiny::reactive({ Visibility[['logout']]   })
-      output[['loginIsVisible']]    <- shiny::reactive({ Visibility[['login']]    })
+      # UI Element visibility Binding
+      output[['UsernameIsVisible']] <- shiny::reactive({ visibility[['username']] })
+      output[['logoutIsVisible']]   <- shiny::reactive({ visibility[['logout']]   })
+      output[['loginIsVisible']]    <- shiny::reactive({ visibility[['login']]    })
       shiny::outputOptions(output, 'UsernameIsVisible', suspendWhenHidden = FALSE)
       shiny::outputOptions(output, 'logoutIsVisible'  , suspendWhenHidden = FALSE)
       shiny::outputOptions(output, 'loginIsVisible'   , suspendWhenHidden = FALSE)
