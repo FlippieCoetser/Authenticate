@@ -1,16 +1,16 @@
-describe('Authentication.Orchestrator',{
+describe('Authenticator.Orchestrator',{
   it('exist',{
-    Authentication.Orchestrator |> expect.exist()
+    Authenticator.Orchestrator |> expect.exist()
   })
 })
 
-describe("When orchestrations <- storage |> Authentication.Orchestrator()",{
+describe("When orchestrations <- storage |> Authenticator.Orchestrator()",{
   it("then orchestrations is a list",{
     # Given
     storage <- get.storage()
 
     # When
-    orchestrations <- storage |> Authentication.Orchestrator()
+    orchestrations <- storage |> Authenticator.Orchestrator()
 
     # Then
     orchestrations |> expect.list()
@@ -20,7 +20,7 @@ describe("When orchestrations <- storage |> Authentication.Orchestrator()",{
     storage <- get.storage()
 
     # When
-    orchestrations <- storage |> Authentication.Orchestrator()
+    orchestrations <- storage |> Authenticator.Orchestrator()
 
     # Then
     orchestrations[['Find.User']] |> expect.exist()
@@ -30,7 +30,7 @@ describe("When orchestrations <- storage |> Authentication.Orchestrator()",{
     storage <- get.storage()
 
     # When
-    orchestrations <- storage |> Authentication.Orchestrator()
+    orchestrations <- storage |> Authenticator.Orchestrator()
 
     # Then
     orchestrations[['Register']] |> expect.exist()
@@ -40,7 +40,7 @@ describe("When orchestrations <- storage |> Authentication.Orchestrator()",{
     storage <- get.storage()
 
     # When
-    orchestrations <- storage |> Authentication.Orchestrator()
+    orchestrations <- storage |> Authenticator.Orchestrator()
 
     # Then
     orchestrations[['Match.Username']] |> expect.exist()
@@ -50,7 +50,7 @@ describe("When orchestrations <- storage |> Authentication.Orchestrator()",{
     storage <- get.storage()
 
     # When
-    orchestrations <- storage |> Authentication.Orchestrator()
+    orchestrations <- storage |> Authenticator.Orchestrator()
 
     # Then
     orchestrations[['Authenticate']] |> expect.exist()
@@ -62,7 +62,7 @@ describe("When username |> orchestrate[['Find.User']]()",{
     # Given
     storage <- get.storage()
 
-    orchestrate <- storage |> Authentication.Orchestrator()
+    orchestrate <- storage |> Authenticator.Orchestrator()
 
     user <-  Users |> tail(1)
 
@@ -76,7 +76,7 @@ describe("When username |> orchestrate[['Find.User']]()",{
     # Given
     storage <- get.storage()
 
-    orchestrate <- storage |> Authentication.Orchestrator()
+    orchestrate <- storage |> Authenticator.Orchestrator()
 
     user <- 'not.existing.user' |> User()
 
@@ -93,7 +93,7 @@ describe("When user |> orchestrate[['Register']](password)",{
     # Given
     storage <- get.storage()
 
-    orchestrate <- storage |> Authentication.Orchestrator()
+    orchestrate <- storage |> Authenticator.Orchestrator()
 
     user     <- 'user.new@gmail.com' |> User()
     password <- 'password'
@@ -117,7 +117,7 @@ describe("When user |> orchestrate[['Match.Username']]()",{
     # Given
     storage <- get.storage()
 
-    orchestrate <- storage |> Authentication.Orchestrator()
+    orchestrate <- storage |> Authenticator.Orchestrator()
 
     user <-  'User' |> storage[['Retrieve']]() |> tail(1)
 
@@ -131,7 +131,7 @@ describe("When user |> orchestrate[['Match.Username']]()",{
     # Given
     storage <- get.storage()
 
-    orchestrate <- storage |> Authentication.Orchestrator()
+    orchestrate <- storage |> Authenticator.Orchestrator()
 
     user <- 'not.existing.user' |> User()
 
@@ -148,7 +148,7 @@ describe("When user |> orchestrate[['Authenticate']](password)",{
     # Given
     storage <- get.storage()
 
-    orchestrate <- storage |> Authentication.Orchestrator()
+    orchestrate <- storage |> Authenticator.Orchestrator()
 
     user     <- 'user' |> User()
     password <- 'password'
@@ -165,7 +165,7 @@ describe("When user |> orchestrate[['Authenticate']](password)",{
         # Given
     storage <- get.storage()
 
-    orchestrate <- storage |> Authentication.Orchestrator()
+    orchestrate <- storage |> Authenticator.Orchestrator()
 
     user     <- 'user' |> User()
     password <- 'password'

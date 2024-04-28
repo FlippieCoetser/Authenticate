@@ -1,5 +1,5 @@
 
-Authentication.Modal.Start  <- \(session) {
+Authenticator.Modal.Start  <- \(session) {
   ns <- session[['ns']]
   shiny::modalDialog(
     easyClose = FALSE,

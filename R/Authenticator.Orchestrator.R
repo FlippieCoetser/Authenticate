@@ -1,14 +1,4 @@
-#' Authentication Orchestration Service
-#' 
-#' @description
-#' Orchestration Service used to:
-#' - Register User
-#' - Check Username
-#' - Authenticate User
-#'  
-#' @param storage The storage provider to use by orchestration service
-#' @export
-Authentication.Orchestrator <- \(storage) {
+Authenticator.Orchestrator <- \(storage) {
   process <- storage |>
     User.Broker()    |>
     User.Service()   |>
@@ -37,3 +27,14 @@ Authentication.Orchestrator <- \(storage) {
   }
   return(orchestrations)
 }
+#' Authentication Orchestration Service
+#' 
+#' @description
+#' Orchestration Service used to:
+#' - Register User
+#' - Check Username
+#' - Authenticate User
+#'  
+#' @param storage The storage provider to use by orchestration service
+#' @export
+Orchestrator <- Authenticator.Orchestrator

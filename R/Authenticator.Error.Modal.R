@@ -1,4 +1,4 @@
-Error.Modal <- \() {
+Authenticator.Error.Modal <- \() {
   modals <- list()
   modals[['Missing.Username']]       <- \(invoke, session, target) {
     if (invoke) {

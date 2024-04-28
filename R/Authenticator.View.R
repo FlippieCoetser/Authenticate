@@ -1,4 +1,4 @@
-Authentication.View <- \(id) {
+Authenticator.View <- \(id) {
   ns <- shiny::NS(id)
   shiny::fluidRow(
     shiny::column(
@@ -49,4 +49,4 @@ Authentication.View <- \(id) {
 #' @return A Shiny UI component that includes conditional panels for user authentication management.
 #'
 #' @export
-View <- Authentication.View
+View <- Authenticator.View

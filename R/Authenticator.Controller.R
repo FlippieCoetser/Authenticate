@@ -1,17 +1,17 @@
-Authentication.Controller <- \(id, storage, user = shiny::reactiveValues() , debug = FALSE) {
+Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debug = FALSE) {
   shiny::moduleServer(
     id,
     \(input, output, session) { 
       log <- \(message) if (debug) print(message)
 
       # UI Modal Dialogs
-      modal <- Error.Modal()
+      modal <- Authenticator.Error.Modal()
       
       # UI Element Visibility
       visibility <- shiny::reactiveValues()
 
       # Data Access
-      data <- storage |> Authentication.Orchestrator()
+      data <- storage |> Authenticator.Orchestrator()
 
       # UI Event Binding
       shiny::observeEvent(input[["login.guest"]], { authenticator[['Start']][["login.guest"]]()  })
@@ -34,7 +34,7 @@ Authentication.Controller <- \(id, storage, user = shiny::reactiveValues() , deb
         visibility[['username']] <- FALSE
         visibility[['logout']]   <- FALSE
         visibility[['login']]    <- FALSE
-        shiny::showModal(Authentication.Modal.Start(session))
+        shiny::showModal(Authenticator.Modal.Start(session))
       }
       authenticator[['login']]  <- \() {
         log('Login User')
@@ -45,7 +45,7 @@ Authentication.Controller <- \(id, storage, user = shiny::reactiveValues() , deb
         visibility[['username']] <- FALSE
         visibility[['logout']]   <- FALSE
         visibility[['login']]    <- FALSE
-        shiny::showModal(Authentication.Modal.Start(session))
+        shiny::showModal(Authenticator.Modal.Start(session))
       }
       authenticator[['logout']] <- \() {
         log('Logout User')
@@ -59,7 +59,7 @@ Authentication.Controller <- \(id, storage, user = shiny::reactiveValues() , deb
         visibility[['login']]    <- FALSE
 
 
-        shiny::showModal(Authentication.Modal.Start(session))
+        shiny::showModal(Authenticator.Modal.Start(session))
       }  
       authenticator[['cancel']] <- \() {
         log('Cancel')
@@ -74,7 +74,7 @@ Authentication.Controller <- \(id, storage, user = shiny::reactiveValues() , deb
 
 
         shiny::removeModal(session)
-        shiny::showModal(Authentication.Modal.Start(session))
+        shiny::showModal(Authenticator.Modal.Start(session))
       }
 
       authenticator[['Start']] <- NULL
@@ -92,7 +92,7 @@ Authentication.Controller <- \(id, storage, user = shiny::reactiveValues() , deb
         visibility[['logout']]   <- FALSE
         visibility[['login']]    <- FALSE
         shiny::removeModal(session)
-        shiny::showModal(Authentication.Modal.Login(session))
+        shiny::showModal(Authenticator.Login.Modal(session))
       }
       authenticator[['Start']][['signup']]       <- \() {
         log('Signup User')
@@ -100,7 +100,7 @@ Authentication.Controller <- \(id, storage, user = shiny::reactiveValues() , deb
         visibility[['logout']]   <- FALSE
         visibility[['login']]    <- FALSE
         shiny::removeModal(session)
-        shiny::showModal(Authentication.Modal.Signup(session))
+        shiny::showModal(Authenticator.Signup.Modal(session))
       }
 
       authenticator[['Login']] <- NULL
@@ -225,7 +225,7 @@ Authentication.Controller <- \(id, storage, user = shiny::reactiveValues() , deb
 #'
 #' @param id A unique identifier for the Shiny module.
 #' @param storage A storage backend, presumably for managing user data.
-#' @param app A reference to the main Shiny app object, used to manage global states.
+#' @param user An optional reactive values with cached user details.
 #' @param debug A logical value indicating whether to print debug messages.
 #'
 #' @details
@@ -243,4 +243,4 @@ Authentication.Controller <- \(id, storage, user = shiny::reactiveValues() , deb
 #' @return A Shiny module server function that can be invoked with `callModule`.
 #'
 #' @export
-Controller <- Authentication.Controller
+Controller <- Authenticator.Controller
