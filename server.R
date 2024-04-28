@@ -2,18 +2,18 @@ storage <- data.frame() |> Storage::Storage(type = "memory")
 Authenticate::Users |> storage[['Seed.Table']]('User')
 
 shinyServer(\(input, output, session) {
-  state <- reactiveValues()
-  state[['username']]   <- NULL
+  user <- reactiveValues()
+  user[['username']]   <- NULL
 
   reset <- \() {
-    state[['username']]   <- NULL
+    user[['username']]   <- NULL
   }
 
   observe({
-    if (is.null(state[['username']])) {
+    if (is.null(user[['username']])) {
       reset()
     } 
   })
 
-  Authenticate::Controller("user", storage, state)
+  Authenticate::Controller("user", storage, user)
 })
