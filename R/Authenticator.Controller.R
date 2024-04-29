@@ -34,7 +34,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
         visibility[['username']] <- FALSE
         visibility[['logout']]   <- FALSE
         visibility[['login']]    <- FALSE
-        shiny::showModal(Authenticator.Modal.Start(session))
+        shiny::showModal(Authenticator.Start.Modal(session))
       }
       authenticator[['login']]  <- \() {
         log('Login User')
@@ -45,7 +45,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
         visibility[['username']] <- FALSE
         visibility[['logout']]   <- FALSE
         visibility[['login']]    <- FALSE
-        shiny::showModal(Authenticator.Modal.Start(session))
+        shiny::showModal(Authenticator.Start.Modal(session))
       }
       authenticator[['logout']] <- \() {
         log('Logout User')
@@ -59,7 +59,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
         visibility[['login']]    <- FALSE
 
 
-        shiny::showModal(Authenticator.Modal.Start(session))
+        shiny::showModal(Authenticator.Start.Modal(session))
       }  
       authenticator[['cancel']] <- \() {
         log('Cancel')
@@ -74,7 +74,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
 
 
         shiny::removeModal(session)
-        shiny::showModal(Authenticator.Modal.Start(session))
+        shiny::showModal(Authenticator.Start.Modal(session))
       }
 
       authenticator[['Start']] <- NULL
@@ -110,14 +110,15 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
             log('Validate User Credentials')
             input[['username']] |> validate[['Has.Username']]()
             input[['username']] |> 
-              User() |> 
+              User.Model() |> 
               data[['Match.Username']]() |> 
               validate[['Registered.Username']]()
 
             input[['password']] |> validate[['Has.Password']]()
 
             log('Authenticate User')
-            input[['username']] |> User() |>
+            input[['username']] |> 
+              User.Model() |>
               data[['Authenticate']](input[['password']]) |>
               validate[['Correct.Password']]()
             
@@ -156,7 +157,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
             log('Validate User Registration')
             input[['username']] |> validate[['Has.Username']]()
             input[['username']] |> 
-              User() |> 
+              User.Model() |> 
               data[['Match.Username']]() |> 
               validate[['Unregistered.Username']]()
 
@@ -167,7 +168,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
 
             log('Register User')
             input[['username']] |>
-              User() |> 
+              User.Model() |> 
               data[['Register']](input[['password']])
 
             # Update State
@@ -190,6 +191,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
 
             'Field.Missing: Password' |> 
               grepl(error) |> modal[['Missing.Password']](session, "signup")
+              
             'Field.Missing: Repeated Password' |> 
               grepl(error) |> modal[['Missing.PasswordRepeat']](session, "signup")
 

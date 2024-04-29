@@ -78,7 +78,7 @@ describe("When username |> orchestrate[['Find.User']]()",{
 
     orchestrate <- storage |> Authenticator.Orchestrator()
 
-    user <- 'not.existing.user' |> User()
+    user <- 'not.existing.user' |> User.Model()
 
     # When
     result <- user[['username']] |> orchestrate[['Find.User']]()
@@ -95,7 +95,7 @@ describe("When user |> orchestrate[['Register']](password)",{
 
     orchestrate <- storage |> Authenticator.Orchestrator()
 
-    user     <- 'user.new@gmail.com' |> User()
+    user     <- 'user.new@gmail.com' |> User.Model()
     password <- 'password'
     id       <- user[['id']]
 
@@ -133,7 +133,7 @@ describe("When user |> orchestrate[['Match.Username']]()",{
 
     orchestrate <- storage |> Authenticator.Orchestrator()
 
-    user <- 'not.existing.user' |> User()
+    user <- 'not.existing.user' |> User.Model()
 
     # When
     result <- user |> orchestrate[['Match.Username']]()
@@ -150,7 +150,7 @@ describe("When user |> orchestrate[['Authenticate']](password)",{
 
     orchestrate <- storage |> Authenticator.Orchestrator()
 
-    user     <- 'user' |> User()
+    user     <- 'user' |> User.Model()
     password <- 'password'
 
     user |> orchestrate[['Register']](password)
@@ -167,7 +167,7 @@ describe("When user |> orchestrate[['Authenticate']](password)",{
 
     orchestrate <- storage |> Authenticator.Orchestrator()
 
-    user     <- 'user' |> User()
+    user     <- 'user' |> User.Model()
     password <- 'password'
 
     user |> orchestrate[['Register']](password)

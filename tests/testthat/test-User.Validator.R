@@ -69,7 +69,7 @@ describe("When user |> validate[['Exists']]()",{
     validate <- User.Validator()
 
     # When
-    user <- 'user@gmail.com' |> User()
+    user <- 'user@gmail.com' |> User.Model()
 
     output <- user |> validate[['Exists']]()
 
@@ -92,7 +92,7 @@ describe("When user |> validate[['Exists']]()",{
     validate <- User.Validator()
 
     # When
-    user <- 'user@gmail.com' |> User()
+    user <- 'user@gmail.com' |> User.Model()
 
     output <- user |> validate[['Exists']]()
 
@@ -107,7 +107,7 @@ describe("When user |> validate[['Has.Id']]()",{
     validate <- User.Validator()
 
     # When
-    user <- 'user@gmail.com' |> User()
+    user <- 'user@gmail.com' |> User.Model()
 
     # Then
     user |> validate[['Has.Id']]() |> expect.no.error()
@@ -129,7 +129,7 @@ describe("When user |> validate[['Has.Id']]()",{
     validate <- User.Validator()
 
     # When
-    user <- 'user@gmail.com' |> User()
+    user <- 'user@gmail.com' |> User.Model()
 
     output <- user |> validate[['Has.Id']]() 
 
@@ -144,7 +144,7 @@ describe("When user |> validate[['Has.Username']]()",{
     validate <- User.Validator()
 
     # When
-    user <- 'user@gmail.com' |> User()
+    user <- 'user@gmail.com' |> User.Model()
 
     # Then
     user |> validate[['Has.Username']]() |> expect.no.error()
@@ -166,7 +166,7 @@ describe("When user |> validate[['Has.Username']]()",{
     validate <- User.Validator()
 
     # When
-    user <- 'user@gmail.com' |> User()
+    user <- 'user@gmail.com' |> User.Model()
 
     output <- user |> validate[['Has.Username']]()
 
@@ -181,7 +181,7 @@ describe("When user |> validate[['Has.Hash']]()",{
     validate <- User.Validator()
 
     # When
-    user <- 'user@gmail.com' |> User()
+    user <- 'user@gmail.com' |> User.Model()
 
     # Then
     user |> validate[['Has.Hash']]() |> expect.no.error()
@@ -203,7 +203,7 @@ describe("When user |> validate[['Has.Hash']]()",{
     validate <- User.Validator()
 
     # When
-    user <- 'user@gmail.com' |> User()
+    user <- 'user@gmail.com' |> User.Model()
 
     output <- user |> validate[['Has.Hash']]()
 
@@ -218,7 +218,7 @@ describe("When user |> validate[['Has.Salt']]()",{
     validate <- User.Validator()
 
     # When
-    user <- 'user@gmail.com' |> User()
+    user <- 'user@gmail.com' |> User.Model()
 
     # Then
     user |> validate[['Has.Salt']]() |> expect.no.error()
@@ -240,7 +240,7 @@ describe("When user |> validate[['Has.Salt']]()",{
     validate <- User.Validator()
 
     # When
-    user <- 'user@gmail.com' |> User()
+    user <- 'user@gmail.com' |> User.Model()
 
     output <- user |> validate[['Has.Salt']]()
 
@@ -255,7 +255,7 @@ describe("When user |> validate[['User']]()",{
     validate <- User.Validator()
 
     # When
-    user <- 'user@gmail.com' |> User()
+    user <- 'user@gmail.com' |> User.Model()
 
     # Then
     user |> validate[['User']]() |> expect.no.error()

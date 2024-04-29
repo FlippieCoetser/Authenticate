@@ -123,7 +123,7 @@ describe("When user |> process[['Add']]()",{
     service <- storage |> User.Broker() |> User.Service() 
     process <- service |> User.Processor()
 
-    new.user <- 'user' |> User()
+    new.user <- 'user' |> User.Model()
 
     expected.user <- new.user
 
@@ -145,7 +145,7 @@ describe("When user |> process[['Upsert']]()",{
     service <- storage |> User.Broker() |> User.Service() 
     process <- service |> User.Processor()
 
-    new.user <- 'user' |> User()
+    new.user <- 'user' |> User.Model()
 
     expected.user <- new.user
 
@@ -272,7 +272,7 @@ describe("When user |> process[['Match.Username']]()",{
     service <- storage |> User.Broker() |> User.Service() 
     process <- service |> User.Processor()
 
-    user <- 'not.existing.user' |> User()
+    user <- 'not.existing.user' |> User.Model()
 
     # When
     result <- user |> process[['Match.Username']]()

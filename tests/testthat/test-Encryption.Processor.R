@@ -34,7 +34,7 @@ describe("When user |> process[['Set.Hash']](password)",{
 
     process <- service |> Encryption.Processor()
 
-    user     <- 'user' |> User()
+    user     <- 'user' |> User.Model()
     password <- 'password'
 
     expected.hash <- 

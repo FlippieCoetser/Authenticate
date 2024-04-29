@@ -67,7 +67,7 @@ describe("When user |> operation[['Insert']]()",{
     storage   <- get.storage()
     operation <- storage |> User.Broker()
 
-    new.user <- 'User.x@gmail.com' |> User()
+    new.user <- 'User.x@gmail.com' |> User.Model()
 
     expected.user <- new.user
 

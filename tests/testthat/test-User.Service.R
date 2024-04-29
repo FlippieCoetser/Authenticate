@@ -80,7 +80,7 @@ describe("When user |> service[['Add']]()",{
     broker   <- storage |> User.Broker()
     services <- broker  |> User.Service()
 
-    user <- 'user@gmail.com' |> User()
+    user <- 'user@gmail.com' |> User.Model()
 
     # When
     user |> services[['Add']]()

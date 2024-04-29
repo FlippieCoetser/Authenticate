@@ -11,7 +11,7 @@
 #' 
 #' @param username The username of the user
 #' @export 
-User <- \(username) data.frame(
+User.Model <- \(username) data.frame(
   id       = uuid::UUIDgenerate(),
   username = username,
   hash     = '',
