@@ -107,7 +107,7 @@ describe("When user |> orchestrate[['Register']](password)",{
     user |> orchestrate[['Register']](password)
 
     # Then
-    actual.user <- id |> storage[['RetrieveWhereId']]('User')
+    actual.user <- id |> storage[['retrieve.where.id']]('User')
     actual.user |> expect.equal.data(expected.user)
   })
 })
@@ -119,7 +119,7 @@ describe("When user |> orchestrate[['Match.Username']]()",{
 
     orchestrate <- storage |> Authenticator.Orchestrator()
 
-    user <-  'User' |> storage[['Retrieve']]() |> tail(1)
+    user <-  'User' |> storage[['retrieve']]() |> tail(1)
 
     # When
     result <- user |> orchestrate[['Match.Username']]()

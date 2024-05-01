@@ -2,6 +2,6 @@
 
 get.storage <- \() {
   storage <- data.frame() |> Storage::Storage(type='memory')
-  Users |> storage[['Seed.Table']]('User')
+  Users |> storage[['seed.table']]('User')
   return(storage) 
 }

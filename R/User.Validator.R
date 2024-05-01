@@ -26,32 +26,32 @@ User.Validator <- \() {
     user |> validators[['Has.Salt']]()
   }
   validators[['Exists']]      <- \(user) {
-    user |> validators[['Is.Not.NULL']]('user') |> 
+    user |> validators[['is.not.NULL']]('user') |> 
       tryCatch(error = \(...) {TRUE |> exception[['User.NULL']]()})
     return(user)
   }
   validators[['Has.Id']]       <- \(user) {
-    user[['id']] |> validators[['Is.Not.NULL']]('id') |>
+    user[['id']] |> validators[['is.not.NULL']]('id') |>
       tryCatch(error = \(...) { TRUE |> exception[['Attribute.NULL']]('id')})
     return(user)
   }
   validators[['Has.Username']] <- \(user) {
-    user[['username']] |> validators[['Is.Not.NULL']]('username') |>
+    user[['username']] |> validators[['is.not.NULL']]('username') |>
       tryCatch(error = \(...) { TRUE |> exception[['Attribute.NULL']]('username')})
     return(user)
   }
   validators[['Has.Hash']]     <- \(user) {
-    user[['hash']] |> validators[['Is.Not.NULL']]('hash') |>
+    user[['hash']] |> validators[['is.not.NULL']]('hash') |>
       tryCatch(error = \(...) { TRUE |> exception[['Attribute.NULL']]('hash')})
     return(user)
   }
   validators[['Has.Salt']]     <- \(user) {
-    user[['salt']] |> validators[['Is.Not.NULL']]('salt') |>
+    user[['salt']] |> validators[['is.not.NULL']]('salt') |>
       tryCatch(error = \(...) { TRUE |> exception[['Attribute.NULL']]('salt')})
     return(user)
   }
   validators[['Id']]          <- \(id) {
-    id |> validators[['Is.UUID']]('id')
+    id |> validators[['is.UUID']]('id')
     return(id)
   }
   return(validators)

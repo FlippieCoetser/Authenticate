@@ -17,19 +17,19 @@ User.Broker <- \(storage) {
 
   operations <- list()
   operations[['Insert']]        <- \(user) {
-    user |> storage[['Add']]('User')
+    user |> storage[['add']]('User')
   }
   operations[['Select']]        <- \() {
-    'User' |> storage[['Retrieve']]()
+    'User' |> storage[['retrieve']]()
   }
   operations[['SelectWhereId']] <- \(id) {
-    id |> storage[['RetrieveWhereId']]('User', fields)
+    id |> storage[['retrieve.where.id']]('User', fields)
   }
   operations[['Update']]        <- \(user) {
-    user |> storage[['Modify']]('User')
+    user |> storage[['modify']]('User')
   }
   operations[['Delete']]        <- \(id) {
-    id |> storage[['Remove']]('User')
+    id |> storage[['remove']]('User')
   }
   return(operations)
 }
