@@ -1,14 +1,14 @@
 # Authenticate R Package
 
-This repository contains an plugin for R Shiny that allows users to authenticate using username and password. The plugin supports both login and registration features.
+This repository contains a plugin for R Shiny that allows users to authenticate using a username and password. The plugin provides both login and registration capabilities.
 
-Note: This package heavily depends on R `Storage` package. Current the storage package provide both `odbc` and `in-memory` type data stores.
+Note: This package heavily depends on R `Storage` package. Currently, the storage package provides both `odbc` and `in-memory` type data stores.
 
 ## Installation
 
-At the time of writing this README, the package is not available on CRAN. To install the package, you can use the `devtools` package to either install the package directly from Github or Build and Install locally.
+At the time of writing this README, the package is not available on CRAN. To install the package, you can use the `devtools` package to either install the package directly from GitHub or Build and Install it locally.
 
-### Install from Github
+### Install from GitHub
 
 1. Use the `devtools` package to install the package directly from Github:
 
@@ -48,7 +48,7 @@ Use the `library` function to load the `View`, `Controller` and `Orchestrator` d
 library(Authenticate)
 ```
 
-### Directly Access component using the `Authenticate` namespace:
+### Directly Access the component using the `Authenticate` namespace:
 
 Directly address the `View`, `Controller` and `Orchestrator` using the `Authenticate` namespace.
 
@@ -60,7 +60,7 @@ Orchestrator <- Authenticate::Orchestrator
 
 ### Seed the storage
 
-You need to seed the storage with some data, if you are using the `in-memory` storage type.
+You need to seed the storage with some data if you are using the `in-memory` storage type.
 
 1. Create a new `storage` instance:
 
@@ -91,7 +91,7 @@ Add the `Controller` to the Server. See the `server.r` file for an example. The 
 1. The id of the shiny module.
 2. The storage instance.
 3. Optional `user` reactive value to store the current user details.
-4. Optional `debug` flag that enable event logging in console.
+4. Optional `debug` flag that enables event logging in the console.
 
 ```r
 Authenticate::Controller("user", storage)
