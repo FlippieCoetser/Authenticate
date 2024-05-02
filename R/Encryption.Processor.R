@@ -12,8 +12,8 @@
 #' @return A list of functions that perform operations on model data, specifically:
 #'   \describe{
 #'     \item{\code{Set.Hash}}{
-#'       Updates a model object with a hashed password. The model must have a 'hash' 
-#'       field and a 'salt' field. The password is hashed using the provided salt 
+#'       Updates a model object with a hashed password. The model must have a `hash` 
+#'       field and a `salt` field. The password is hashed using the provided salt 
 #'       and the hash function from the encryption service.
 #'       \itemize{
 #'         \item \code{model}: The model object containing the user data.

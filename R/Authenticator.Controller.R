@@ -72,7 +72,6 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
         visibility[['logout']]   <- FALSE
         visibility[['login']]    <- FALSE
 
-
         shiny::removeModal(session)
         shiny::showModal(Authenticator.Start.Modal(session))
       }
@@ -217,7 +216,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
   )
 }
 
-#' Authentication Controller for Shiny Application
+#' Authentication Controller for Shiny Application Plugin
 #'
 #' This function manages user authentication within a Shiny application. It
 #' sets up a module server for handling user interactions related to login,
@@ -226,7 +225,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
 #' based on the authentication state.
 #'
 #' @param id A unique identifier for the Shiny module.
-#' @param storage A storage backend, presumably for managing user data.
+#' @param storage A storage backend for managing user data.
 #' @param user An optional reactive values with cached user details.
 #' @param debug A logical value indicating whether to print debug messages.
 #'
@@ -242,7 +241,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
 #' and the UI is updated accordingly to reflect the current state. Errors in user input
 #' are handled gracefully, providing modal dialogs to inform users of specific issues.
 #'
-#' @return A Shiny module server function that can be invoked with `callModule`.
+#' @return A Shiny module server function.
 #'
 #' @export
 Controller <- Authenticator.Controller
