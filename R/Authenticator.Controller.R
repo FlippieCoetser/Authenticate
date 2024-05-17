@@ -1,4 +1,4 @@
-Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues(), title = 'Title', debug = FALSE) {
+Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues(), title = 'Authenticate', debug = FALSE) {
   shiny::moduleServer(
     id,
     \(input, output, session) { 
@@ -233,6 +233,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues(), title
 #' @param id A unique identifier for the Shiny module.
 #' @param storage A storage backend for managing user data.
 #' @param user An optional reactive values with cached user details.
+#' @param title A character string representing the title of the authentication dialog.
 #' @param debug A logical value indicating whether to print debug messages.
 #'
 #' @details
