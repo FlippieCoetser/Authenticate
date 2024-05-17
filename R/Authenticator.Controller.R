@@ -12,6 +12,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
 
       # Data Access
       data <- storage |> Authenticator.Orchestrator()
+      app  <- session[['userData']]
 
       # UI Event Binding
       shiny::observeEvent(input[["login.guest"]], { authenticator[['Start']][["login.guest"]]()  })
@@ -52,6 +53,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
 
         # Set State
         user[['username']] <- NULL
+        app[['username']]  <- NULL
 
         # Set Component visibility
         visibility[['username']] <- FALSE
@@ -66,6 +68,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
 
         # Set State
         user[['username']] <- NULL
+        app[['username']]  <- NULL
 
         # Set Component visibility
         visibility[['username']] <- FALSE
@@ -83,6 +86,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
         visibility[['logout']]   <- FALSE 
         visibility[['login']]    <- TRUE
         user[['username']] <- ''
+        app[['username']]  <- ''
         shiny::removeModal(session)
       }
       authenticator[['Start']][['login.user']]   <- \() {
@@ -123,6 +127,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
             
             # Update State
             user[['username']] <- input[['username']]
+            app[['username']]  <- user[['username']]
 
             # Set Component visibility
             visibility[['username']] <- TRUE
@@ -172,6 +177,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
 
             # Update State
             user[['username']] <- input[['username']]
+            app[['username']]  <- user[['username']]
 
             # Set Component visibility
             visibility[['username']] <- TRUE
