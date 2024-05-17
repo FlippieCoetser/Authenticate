@@ -1,6 +1,3 @@
-storage <- data.frame() |> Storage::Storage(type = "memory")
-Authenticate::Users |> storage[['seed.table']]('User')
-
 shinyServer(\(input, output, session) {
   user <- reactiveValues()
   user[['username']]   <- NULL
