@@ -1,4 +1,4 @@
-Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debug = FALSE) {
+Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues(), title = 'Title', debug = FALSE) {
   shiny::moduleServer(
     id,
     \(input, output, session) { 
@@ -35,7 +35,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
         visibility[['username']] <- FALSE
         visibility[['logout']]   <- FALSE
         visibility[['login']]    <- FALSE
-        shiny::showModal(Authenticator.Start.Modal(session))
+        shiny::showModal(Authenticator.Start.Modal(session,title))
       }
       authenticator[['login']]  <- \() {
         log('Login User')
@@ -46,7 +46,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
         visibility[['username']] <- FALSE
         visibility[['logout']]   <- FALSE
         visibility[['login']]    <- FALSE
-        shiny::showModal(Authenticator.Start.Modal(session))
+        shiny::showModal(Authenticator.Start.Modal(session,title))
       }
       authenticator[['logout']] <- \() {
         log('Logout User')
@@ -61,7 +61,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
         visibility[['login']]    <- FALSE
 
 
-        shiny::showModal(Authenticator.Start.Modal(session))
+        shiny::showModal(Authenticator.Start.Modal(session,title))
       }  
       authenticator[['cancel']] <- \() {
         log('Cancel')
@@ -76,7 +76,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
         visibility[['login']]    <- FALSE
 
         shiny::removeModal(session)
-        shiny::showModal(Authenticator.Start.Modal(session))
+        shiny::showModal(Authenticator.Start.Modal(session,title))
       }
 
       authenticator[['Start']] <- NULL
@@ -95,7 +95,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
         visibility[['logout']]   <- FALSE
         visibility[['login']]    <- FALSE
         shiny::removeModal(session)
-        shiny::showModal(Authenticator.Login.Modal(session))
+        shiny::showModal(Authenticator.Login.Modal(session,title))
       }
       authenticator[['Start']][['signup']]       <- \() {
         log('Signup User')
@@ -103,7 +103,7 @@ Authenticator.Controller <- \(id, storage, user = shiny::reactiveValues() , debu
         visibility[['logout']]   <- FALSE
         visibility[['login']]    <- FALSE
         shiny::removeModal(session)
-        shiny::showModal(Authenticator.Signup.Modal(session))
+        shiny::showModal(Authenticator.Signup.Modal(session,title))
       }
 
       authenticator[['Login']] <- NULL

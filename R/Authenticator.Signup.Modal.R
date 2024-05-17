@@ -1,4 +1,4 @@
-Authenticator.Signup.Modal <- \(session) {
+Authenticator.Signup.Modal <- \(session,title) {
   ns <- session[['ns']]
   shiny::modalDialog(
     easyClose = FALSE,
@@ -6,7 +6,7 @@ Authenticator.Signup.Modal <- \(session) {
     fade = FALSE,
     shiny::fluidRow(
       shiny::column(12, align="center",
-        shiny::h1("RenoPilot", id='modal-heading'),
+        shiny::h1(title, id='modal-heading'),
         shiny::h4("Sign-up")
       )
     ),
