@@ -2,7 +2,7 @@
 
 This repository contains a plugin for R Shiny that allows users to authenticate using a username and password. The plugin provides both login and registration capabilities.
 
-Note: This package heavily depends on R `Storage` package. Currently, the storage package provides both `odbc` and `in-memory` type data stores.
+Note: This package depends on R `Storage` package. Currently, the storage package provides both `odbc` and `in-memory` type data stores.
 
 ## Installation
 
@@ -91,8 +91,22 @@ Add the `Controller` to the Server. See the `server.r` file for an example. The 
 1. The id of the shiny module.
 2. The storage instance.
 3. Optional `user` reactive value to store the current user details.
-4. Optional `debug` flag that enables event logging in the console.
+4. Optional `title` values to set the title of the login and registration modals.
+5. Optional `debug` flag that enables event logging in the console.
 
 ```r
-Authenticate::Controller("user", storage)
+Authenticate::Controller("user", storage, title = "Login", debug = TRUE)
 ```
+
+#### Add optional user reactive values
+
+```r
+user <- reactiveVal()
+Authenticate::Controller("user", storage, user = user, title = "Login", debug = TRUE)
+
+observeEvent(user[['username']], {
+  print(user[['username']])
+})
+```
+
+> Note: After successful login, `session[['userData']][['username']]` will also contains currently logged-in user's username.

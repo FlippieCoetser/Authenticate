@@ -2,21 +2,29 @@
 % Please edit documentation in R/Authenticator.Controller.R
 \name{Controller}
 \alias{Controller}
-\title{Authentication Controller for Shiny Application}
+\title{Authentication Controller for Shiny Application Plugin}
 \usage{
-Controller(id, storage, user = shiny::reactiveValues(), debug = FALSE)
+Controller(
+  id,
+  storage,
+  user = shiny::reactiveValues(),
+  title = "Authenticate",
+  debug = FALSE
+)
 }
 \arguments{
 \item{id}{A unique identifier for the Shiny module.}
 
-\item{storage}{A storage backend, presumably for managing user data.}
+\item{storage}{A storage backend for managing user data.}
 
 \item{user}{An optional reactive values with cached user details.}
+
+\item{title}{A character string representing the title of the authentication dialog.}
 
 \item{debug}{A logical value indicating whether to print debug messages.}
 }
 \value{
-A Shiny module server function that can be invoked with \code{callModule}.
+A Shiny module server function.
 }
 \description{
 This function manages user authentication within a Shiny application. It
